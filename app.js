@@ -110,4 +110,4 @@ const displayController = (function () {
 })();
 
 
-gameController.startGame();
+//gameController.startGame();
