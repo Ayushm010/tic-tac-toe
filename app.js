@@ -21,8 +21,6 @@ const gameboard = (function () {
   };
 })();
 
-
-
 function createPlayer(name, marker) {
   return { name, marker };
 }
@@ -32,21 +30,17 @@ const gameController = (function () {
   const player2 = createPlayer("Santanu", "O");
 
   let board = gameboard.getBoard();
-
-  // lets run the game
-  //1. we have to get the board and display it
-
   let currentPlayer = player1;
 
   const startGame = () => {
-    displayController.disp(board);//renders the board
+    displayController.disp(board); // initial render
 
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => {
       cell.addEventListener("click", () => {
         const pos = Number(cell.id);
 
-        if (gameboard.getBoard()[pos] !== "") return; 
+        if (gameboard.getBoard()[pos] !== "") return; // ignore already-filled cells
 
         gameboard.setBoard(currentPlayer.marker, pos);
         displayController.disp(board);
@@ -54,24 +48,24 @@ const gameController = (function () {
         if (checkWinner(currentPlayer.marker, pos)) {
           console.log(currentPlayer.name + " is the Winner");
           displayController.disp(board);
-          restartGame();
-          startGame();
-          for(let i = 0;i<board.length;i++)console.log(board[i]);
+          for (let i = 0; i < board.length; i++) console.log(board[i]);
+          restartGame(); // auto-restart after win
           return;
         }
 
         if (!gameboard.getBoard().includes("")) {
-          console.log("Draw");
+          console.log("Draw"); // all cells filled, no winner
           return;
         }
 
+        // toggle player turn
         currentPlayer = currentPlayer.marker === "X" ? player2 : player1;
       });
     });
-
   }
 
   const checkWinner = (marker, pos) => {
+    // predefined winning combinations based on position
     const posMap = {
       0: [[0, 1, 2], [0, 3, 6], [0, 4, 8]],
       1: [[0, 1, 2], [1, 4, 7]],
@@ -86,14 +80,11 @@ const gameController = (function () {
 
     if (pos in posMap) {
       const winnerArr = posMap[pos];
-      let flag = false;
-
       for (let i = 0; i < winnerArr.length; i++) {
         if (board[winnerArr[i][0]] === marker &&
           board[winnerArr[i][1]] === marker &&
           board[winnerArr[i][2]] === marker) {
-          flag = true;
-          return flag;
+          return true;
         }
       }
     }
@@ -102,8 +93,9 @@ const gameController = (function () {
   }
 
   const restartGame = () => {
-    board = gameboard.resetBoard;
-    startGame();
+    board = gameboard.resetBoard(); // clear state
+    displayController.disp(board);  // clear UI
+    startGame(); 
   }
 
   return { startGame, restartGame };
@@ -112,21 +104,15 @@ const gameController = (function () {
 
 const displayController = (function () {
   const disp = (board) => {
-
     const cells = document.querySelectorAll('.cell');
 
-    // Access like an array
     cells.forEach(cell => {
       const idx = Number(cell.id);
       cell.textContent = board[idx];
     });
-
   };
 
   return { disp, }
 })();
-
-
-
 
 gameController.startGame();
