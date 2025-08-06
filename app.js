@@ -1,3 +1,6 @@
+let xWin = 0;
+let oWin = 0;
+let tie = 0;
 const gameboard = (function () {
   let board = ["", "", "", "", "", "", "", "", ""];
 
@@ -5,12 +8,12 @@ const gameboard = (function () {
 
   const setBoard = (marker, pos) => {
     if (board[pos] === "") {
-      board[pos] = marker;
+      board[pos] = marker; // place marker if cell is empty
     }
   };
 
   const resetBoard = () => {
-    board = ["", "", "", "", "", "", "", "", ""];
+    board = ["", "", "", "", "", "", "", "", ""]; // reset board to empty
     return board;
   };
 
@@ -22,7 +25,7 @@ const gameboard = (function () {
 })();
 
 function createPlayer(name, marker) {
-  return { name, marker };
+  return { name, marker }; // player factory function
 }
 
 const gameController = (function () {
@@ -42,30 +45,30 @@ const gameController = (function () {
 
         if (gameboard.getBoard()[pos] !== "") return; // ignore already-filled cells
 
-        gameboard.setBoard(currentPlayer.marker, pos);
-        displayController.disp(board);
+        gameboard.setBoard(currentPlayer.marker, pos); // place marker
+        displayController.disp(board); // update UI
 
         if (checkWinner(currentPlayer.marker, pos)) {
           console.log(currentPlayer.name + " is the Winner");
           displayController.disp(board);
-          for (let i = 0; i < board.length; i++) console.log(board[i]);
-          restartGame(); // auto-restart after win
+          showDialogbox(currentPlayer.name); // show win dialog
           return;
         }
 
         if (!gameboard.getBoard().includes("")) {
+          showDialogbox();
           console.log("Draw"); // all cells filled, no winner
           return;
         }
 
-        // toggle player turn
+        // toggle player
         currentPlayer = currentPlayer.marker === "X" ? player2 : player1;
       });
     });
   }
 
   const checkWinner = (marker, pos) => {
-    // predefined winning combinations based on position
+    // possible winning lines depending on the last move position
     const posMap = {
       0: [[0, 1, 2], [0, 3, 6], [0, 4, 8]],
       1: [[0, 1, 2], [1, 4, 7]],
@@ -84,7 +87,7 @@ const gameController = (function () {
         if (board[winnerArr[i][0]] === marker &&
           board[winnerArr[i][1]] === marker &&
           board[winnerArr[i][2]] === marker) {
-          return true;
+          return true; // winning line found
         }
       }
     }
@@ -92,14 +95,25 @@ const gameController = (function () {
     return false;
   }
 
+  function showDialogbox(name) {
+    const dialog = document.getElementById('myDialog');
+    const btn = document.getElementsByClassName("restart-btn")[0];
+    const msg = document.getElementsByClassName("win-msg")[0];
+    msg.textContent = `${name} Won!!`
+    dialog.showModal(name); // open dialog
+    btn.addEventListener("click", () => {
+      restartGame(); // reset board and UI
+      dialog.close(); // close dialog
+    });
+  }
+
   const restartGame = () => {
-    board = gameboard.resetBoard(); // clear state
-    displayController.disp(board);  // clear UI
-    startGame(); 
+    board = gameboard.resetBoard(); // reset game state
+    displayController.disp(board);  // re-render empty board
+    startGame(); // reattach listeners
   }
 
   return { startGame, restartGame };
-
 })();
 
 const displayController = (function () {
@@ -108,11 +122,12 @@ const displayController = (function () {
 
     cells.forEach(cell => {
       const idx = Number(cell.id);
-      cell.textContent = board[idx];
+      console.log("init:"+board[idx]+":");
+      cell.textContent = board[idx]; // update cell with marker
     });
   };
 
-  return { disp, }
+  return { disp };
 })();
 
-gameController.startGame();
+gameController.startGame(); // initialize the game

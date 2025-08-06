@@ -10,24 +10,32 @@
 
 <body>
     <div class="container">
-        <h1>Tic Tac Toe</h1>
+        <h1>Tic-Tac-Toe Game</h1>
         <div class="result-box">
-            <div class="player-score"></div>
-            <div class="player-score"></div>
+            <div class="player-1">X:</div>
+            <div class="player-2">O:</div>
+            <div class="tie">Tie:</div>
         </div>
 
         <div class="game-grid">
-          <div class="cell" id="0">0</div>
-          <div class="cell" id="1">1</div>
-          <div class="cell" id="2">2</div>
-          <div class="cell" id="3">3</div>
-          <div class="cell" id="4">4</div>
-          <div class="cell" id="5">5</div>
-          <div class="cell" id="6">6</div>
-          <div class="cell" id="7">7</div>
-          <div class="cell" id="8">8</div>
+          <div class="cell" id="0"></div>
+          <div class="cell" id="1"></div>
+          <div class="cell" id="2"></div>
+          <div class="cell" id="3"></div>
+          <div class="cell" id="4"></div>
+          <div class="cell" id="5"></div>
+          <div class="cell" id="6"></div>
+          <div class="cell" id="7"></div>
+          <div class="cell" id="8"></div>
         </div>
+        <button class="reset-counter">RESET</button>
     </div>
+     <dialog id="myDialog">
+        <div><p class="win-msg">Winner</p>
+        <button class="restart-btn">Play Again</button></div>
+    </dialog>
+
+   
     <script src="app.js"></script>
 </body>
 

@@ -1,34 +1,101 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+:root{
+    --primary_color : #a35fc3;
+    --primary_font:"Comic Sans MS", monospace;
 
-.container{
+    --secondary_color: #4f096f;
+}
+
+body {
+    font-family: 'Raleway', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+    background-color: var(--primary_color);
+     font-family: var(--primary_font);
+}
+
+.container {
+    color:var(--secondary_color);
+    margin-top: 30px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 30px;
+
 }
 
 .result-box{
-  height: 120px;
-  width: 320px;
-  border: 2px solid black;
-  border-radius: 5px;
+    display: flex;
+    gap: 100px;
 }
 
-.game-grid{
+.game-grid {
+    background-color:var(--secondary_color);
     height: 360px;
     width: 360px;
-    border: 1px solid black;
+    margin: 20px;
     border-radius: 5px;
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 4px;
 }
 
-.cell{
-    border: 1px solid pink;
+.cell {
+    background-color: var(--primary_color);
     border-radius: 5px;
+    font-size: 50px;
+    font-family: var(--primary_font);
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background-color: #a35fc3;
+    height: 180px;
+    width: 250px;
+    padding: 20px;
+    border-radius: 15px;
+    z-index: 1000;
+}
+
+
+
+dialog>div {
+    height: 100%;
+    width: 100%;
+    color: var(--secondary_color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+dialog,button{
+    border: none;
+    outline: none;
+}
+
+button {
+    font-family: var(--primary_font);
+    font-size: medium;
+    margin: 0;
+    background-color:#9154ade6;
+    color: var(--secondary_color);
+    border-style: none;
+    border-radius: 5px;
+    height: 40px;
+    width: 120px;
 }
