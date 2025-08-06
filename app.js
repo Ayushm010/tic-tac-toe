@@ -1,16 +1,17 @@
 const gameboard = (function () {
-  let board = ["_", "_", "_", "_", "_", "_", "_", "_", "_"];
+  let board = ["", "", "", "", "", "", "", "", ""];
 
   const getBoard = () => board;
 
   const setBoard = (marker, pos) => {
-    if (board[pos] === "_") {
+    if (board[pos] === "") {
       board[pos] = marker;
     }
   };
 
   const resetBoard = () => {
-    board = ["_", "_", "_", "_", "_", "_", "_", "_", "_"];
+    board = ["", "", "", "", "", "", "", "", ""];
+    return board;
   };
 
   return {
@@ -30,31 +31,44 @@ const gameController = (function () {
   const player1 = createPlayer("Ayush", "X");
   const player2 = createPlayer("Santanu", "O");
 
+  let board = gameboard.getBoard();
 
   // lets run the game
   //1. we have to get the board and display it
-  const board = gameboard.getBoard();
 
   let currentPlayer = player1;
 
   const startGame = () => {
     displayController.disp(board);//renders the board
 
-    let i;
-    for (i = 0; i < 9; i++) {
-      const pos = Number(prompt(`enter the position ${currentPlayer.name}: `));
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => {
+      cell.addEventListener("click", () => {
+        const pos = Number(cell.id);
 
-      gameboard.setBoard(currentPlayer.marker, pos);//sets the current marker to the following position
-      displayController.disp(board);
+        if (gameboard.getBoard()[pos] !== "") return; 
 
-      if (checkWinner(currentPlayer.marker, pos)) {
-        console.log(currentPlayer.name + " is the Winner");
-        return;
-      }
-      currentPlayer = currentPlayer.marker === "X" ? player2 : player1;
-    }
+        gameboard.setBoard(currentPlayer.marker, pos);
+        displayController.disp(board);
 
-    if (i === 9) console.log("Draw");
+        if (checkWinner(currentPlayer.marker, pos)) {
+          console.log(currentPlayer.name + " is the Winner");
+          displayController.disp(board);
+          restartGame();
+          startGame();
+          for(let i = 0;i<board.length;i++)console.log(board[i]);
+          return;
+        }
+
+        if (!gameboard.getBoard().includes("")) {
+          console.log("Draw");
+          return;
+        }
+
+        currentPlayer = currentPlayer.marker === "X" ? player2 : player1;
+      });
+    });
+
   }
 
   const checkWinner = (marker, pos) => {
@@ -72,7 +86,7 @@ const gameController = (function () {
 
     if (pos in posMap) {
       const winnerArr = posMap[pos];
-       let flag = false;
+      let flag = false;
 
       for (let i = 0; i < winnerArr.length; i++) {
         if (board[winnerArr[i][0]] === marker &&
@@ -88,8 +102,8 @@ const gameController = (function () {
   }
 
   const restartGame = () => {
-    gameboard.resetBoard();
-    startGame();    
+    board = gameboard.resetBoard;
+    startGame();
   }
 
   return { startGame, restartGame };
@@ -98,16 +112,21 @@ const gameController = (function () {
 
 const displayController = (function () {
   const disp = (board) => {
-    for (let i = 0; i < board.length; i++) {
-      console.log(board[i] + " at " + i);
-      if ((i + 1) % 3 === 0) {
-        console.log("\n");
-      }
-    }
+
+    const cells = document.querySelectorAll('.cell');
+
+    // Access like an array
+    cells.forEach(cell => {
+      const idx = Number(cell.id);
+      cell.textContent = board[idx];
+    });
+
   };
 
   return { disp, }
 })();
 
 
-//gameController.startGame();
+
+
+gameController.startGame();
