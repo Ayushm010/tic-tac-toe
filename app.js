@@ -73,7 +73,7 @@ const gameController = (function () {
           tie += 1;
           tieBtn.textContent = `Tie: ${tie}`;
           showDialogbox("tie");
-          console.log("Draw"); // all cells filled, no winner
+         currentPlayer = currentPlayer.marker === "X" ? player2 : player1;// togles after draw
           return;
         }
 

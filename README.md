@@ -1,2 +1,2 @@
-# Project-8 --> Tic-Tac-Toe Game
-This was the hardest project I’ve done till now. At first, I couldn’t figure out the main logic, but somehow got through it. The DOM part gave me the most trouble, but I learned a lot in the end.
+# Project-9 --> Tic-Tac-Toe Game
+This was the hardest project I’ve done till now. At first, I couldn’t figure out the main logic, but somehow got through it. The DOM part gave me the most trouble, but I learned a lot in the end. 
